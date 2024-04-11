@@ -44,6 +44,11 @@ const Search: FC = ({}) => {
     setSearchQuery(e.target.value);
   }
 
+  //Lets load request ones on app load to show data on start
+  /* useEffect(() => {
+    fetchIssues();
+  }, []); */
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     fetchIssues();
@@ -57,6 +62,7 @@ const Search: FC = ({}) => {
     <form onSubmit={handleSubmit}>
       <Flex style={{ marginBottom: "10px" }}>
         <Input
+          type="text"
           placeholder="Enter repo URL here"
           style={InputStyles}
           onChange={inputSearchQuery}

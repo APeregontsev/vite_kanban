@@ -6,6 +6,7 @@ export function useDragNDrop(options: {
 }) {
   const { dataToSendOnDrag, onSendDroppedData } = options;
   const [dragOverHighlight, setDragOverHighlight] = useState<boolean>(false);
+  const [dragStartHighlight, setDragStartHighlight] = useState<boolean>(false);
 
   function onDragStart(e: React.DragEvent<HTMLDivElement>) {
     if (!dataToSendOnDrag) {
@@ -14,6 +15,7 @@ export function useDragNDrop(options: {
 
     e.dataTransfer.clearData();
     e.dataTransfer.setData("text/plain", dataToSendOnDrag);
+    setDragStartHighlight(true);
   }
 
   function onDrop(e: React.DragEvent<HTMLElement>) {
@@ -22,8 +24,15 @@ export function useDragNDrop(options: {
 
     const data = e.dataTransfer.getData("text");
     setDragOverHighlight(false);
+    setDragStartHighlight(false);
 
     onSendDroppedData(data);
+  }
+
+  function onDragEnd(e: React.DragEvent<HTMLElement>) {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragStartHighlight(false);
   }
 
   function onDragOver(e: React.DragEvent<HTMLElement>) {
@@ -40,11 +49,13 @@ export function useDragNDrop(options: {
 
   return {
     dragOverHighlight,
+    dragStartHighlight,
     dragHandlers: {
       onDragStart,
       onDrop,
       onDragOver,
       onDragLeave,
+      onDragEnd,
     },
   };
 }

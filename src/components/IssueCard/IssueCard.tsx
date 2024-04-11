@@ -23,7 +23,7 @@ const IssueCard: FC<TIssueCard> = ({ id, title, issueNumber, issueDate, author, 
   const { owner, repo } = useAppSelector((state) => state.issues);
   const daysAgoLabel = getDaysAgo(issueDate);
 
-  const { dragOverHighlight, dragHandlers } = useDragNDrop({
+  const { dragOverHighlight, dragStartHighlight, dragHandlers } = useDragNDrop({
     dataToSendOnDrag: id.toString(),
     onSendDroppedData: (data) =>
       dispatch(
@@ -41,7 +41,11 @@ const IssueCard: FC<TIssueCard> = ({ id, title, issueNumber, issueDate, author, 
     <Card
       bordered
       styles={CardWrapperStyles}
-      style={{ ...{ cursor: "default" }, ...(dragOverHighlight ? { backgroundColor: "#e9848424" } : {}) }}
+      style={{
+        ...{ cursor: "default" },
+        ...(dragOverHighlight && { backgroundColor: "#e9848424" }),
+        ...(dragStartHighlight && { backgroundColor: "#8497e923" }),
+      }}
       draggable
       {...dragHandlers}
     >

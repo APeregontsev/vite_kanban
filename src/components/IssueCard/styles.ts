@@ -4,7 +4,7 @@ export const DragZoneStyles = {
   flexDirection: "column" as const,
   cursor: "grab",
   minWidth: "15px",
-  background: "url('./../img/drag_dots.svg') 0 0 repeat-y",
+  background: "url('./img/drag_dots.svg') 0 0 repeat-y",
   marginLeft: "15px",
   marginRight: "-10px",
 };

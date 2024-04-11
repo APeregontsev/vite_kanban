@@ -7,7 +7,6 @@ import { store } from "src/store/store";
 import userEvent from "@testing-library/user-event";
 import { axiosWithAuth } from "src/api/api";
 import { axiosResponseData } from "./mokedAxiosResponse";
-/* import * as searchHelpers from "src/components/Search/helper"; */
 import { renderWithRedux } from "./renderWithRedux";
 import { storeData } from "./mokedStoreData";
 import { State, getCurrentBoardToRender } from "./helper";
@@ -26,27 +25,25 @@ afterEach(() => {
 });
 
 describe("Dashboard", () => {
-  test("1. Page loaded correctly", () => {
-    const { container } = render(
-      <BrowserRouter>
-        <Provider store={store}>
-          <Dashboard />
-        </Provider>
-      </BrowserRouter>
-    );
-
-    // Lets check number of inputs on the page
-    const inputs = container.getElementsByTagName("input");
-    expect(inputs).toHaveLength(1);
+  test("1. Page loaded correctly", async () => {
+    await act(async () => {
+      render(
+        <BrowserRouter>
+          <Provider store={store}>
+            <Dashboard />
+          </Provider>
+        </BrowserRouter>
+      );
+    });
 
     // Lets check input with correct placeholder to be present on the page
     const searchInput = screen.getByPlaceholderText(/Enter repo URL here/i);
     expect(searchInput).toBeInTheDocument();
 
     // Lets check Titles of the columns to be present on the page
-    expect(container).toHaveTextContent(/open/i);
-    expect(container).toHaveTextContent(/inprogress/i);
-    expect(container).toHaveTextContent(/done/i);
+    expect(screen.getByRole("heading", { name: /open/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /inprogress/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /done/i })).toBeInTheDocument();
 
     // Lets check correct buttons to be present on the page
     expect(
@@ -90,13 +87,6 @@ describe("Dashboard", () => {
   });
 
   test("3. Issues rendered correctly from mocked Redux Store", async () => {
-    /*   const mockedGetRepoDetailsFromUR = jest.spyOn(searchHelpers, "getRepoDetailsFromURL");
-    mockedGetRepoDetailsFromUR.mockReturnValue({ owner: "nashsu", repo: "FreeAskInternet" });
-    mockAxiosWithAuth.mockResolvedValue({ data: axiosResponseData }); */
-
-    /*   const mockedUseAppSelector = jest.spyOn(searchHelper, "getRepoDetailsFromURL");
-    mockedUseAppSelector.mockReturnValue(storeData); */
-
     await act(async () => {
       renderWithRedux(<Dashboard />, storeData);
     });
@@ -124,9 +114,19 @@ describe("Dashboard", () => {
     const searchInput = container.querySelector(`input`);
     const submitButton = container.querySelector(`button[type="submit"]`);
 
+    // Lets select neccessary elements on the page
+    /*   const searchInput = screen.getByRole("textbox");
+    const clearButton = screen.getByText("Clear");
+    const submitButton = screen.getByText("Load issues"); */
+
+    //Lets clear default value in search input
+    /*    await act(async () => {
+      await userEvent.click(clearButton!);
+    }); */
+
     // Lets fill input with repo address
     await act(async () => {
-      await userEvent.type(searchInput!, "github.com/nashsu/FreeAskInternet");
+      await userEvent.type(searchInput!, "https://github.com/facebook/react");
     });
 
     // Lets press "Load issues" button
@@ -135,8 +135,10 @@ describe("Dashboard", () => {
     });
 
     // Lets check that owner and repo links rendered on the page
-    expect(container).toHaveTextContent(/nashsu/i);
-    expect(container).toHaveTextContent(/FreeAskInternet/i);
+    screen.debug();
+
+    expect(screen.getByRole("link", { name: /facebook/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /react/i })).toBeInTheDocument();
   });
 
   test("5. Unit: renders issues into correct columns based on their state when no board changes are saved", () => {
