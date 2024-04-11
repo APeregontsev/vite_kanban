@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 import { BreadcrumbItemStyle } from "./styles";
 import { useAppSelector } from "src/store/store";
 
-const BASE_URL = process.env.VITE_BASE_URL as string;
+/* const BASE_URL = process.env.VITE_BASE_URL as string; */
+
+const BASE_URL = "https://github.com";
 
 const RepoBreadcrumb: FC = ({}) => {
   const { owner, repo } = useAppSelector((state) => state.issues);

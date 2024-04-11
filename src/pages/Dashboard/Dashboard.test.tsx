@@ -108,8 +108,6 @@ describe("Dashboard", () => {
     expect(container).toHaveTextContent(/mocked_inprogress/i);
     expect(container).toHaveTextContent(/mocked_open/i);
 
-    screen.debug();
-
     // Lets check rendered data on the page
   }, 5000);
 

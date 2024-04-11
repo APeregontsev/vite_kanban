@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 // @ts-ignore
 import includePaths from "rollup-plugin-includepaths";
-import EnvironmentPlugin from "vite-plugin-environment";
 
 export default defineConfig({
   server: {
@@ -15,5 +14,6 @@ export default defineConfig({
     },
   },
   publicDir: "./public",
-  plugins: [react(), includePaths({ paths: ["./"] }), EnvironmentPlugin("all")],
+  base: "/vite_kanban/",
+  plugins: [react(), includePaths({ paths: ["./"] })],
 });

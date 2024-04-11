@@ -1,10 +1,13 @@
 import axios, { type CreateAxiosDefaults } from "axios";
 
-const VITE_BASE_URL_API = process.env.VITE_BASE_URL_API as string;
-const ACCESS_TOKEN = process.env.VITE_ACCESS_TOKEN as string;
+/* const VITE_BASE_URL_API = process.env.VITE_BASE_URL_API as string;
+const ACCESS_TOKEN = process.env.VITE_ACCESS_TOKEN as string; */
+
+const BASE_URL_API = "https://api.github.com";
+const ACCESS_TOKEN = "";
 
 const options: CreateAxiosDefaults = {
-  baseURL: `${VITE_BASE_URL_API}/repos`,
+  baseURL: `${BASE_URL_API}/repos`,
   headers: {
     "Content-type": "application/json",
   },
